@@ -46,7 +46,7 @@ function makeChart (data, metricName, metricCode, domain) {
     // Don't try to understand this function.  Just give it the right
     // inputs and it will create the chart and render it into the page
     // for you.
-
+    
     
     function getUTC(datestring){
         return Date.UTC(datestring.substring(0,4), datestring.substring(4)-1);
@@ -155,3 +155,28 @@ function makeChart (data, metricName, metricCode, domain) {
     });
 }
 
+// Selected metric name and code
+var m = document.getElementById("metric");
+var mCode = m.options[m.selectedIndex].value;
+var mName = m.options[m.selectedIndex].text;
+
+// Domain
+var domainInput = document.getElementById("domain");
+
+//Optional Parameters
+var optParams
+if (document.getElementsById("start_date") != null) {
+    optParams="start_date=2015" + document.getElementsByID("start_date").value + "&end_date=2015" + document.getElementsById("end_date")
+}
+else if (document.getElementsById("latest") != null)){
+    optParams = "&latest=" + document.getElementsById("latest") 
+}
+else {
+    optParams = ''
+}
+
+// URL for JSONP request from Compete
+var url = "https://apps.compete.com/sites/" + encodeURIComponent(domainInput) + "/trended/" + encodeURIComponent(mCode) +"/apikey=27953e450d095eb57efe7d37187f0ae8"+ encodeURIComponent(optParams) +"&callback=competeData"
+
+// Calling makeChart with competeData, mName, mCode, domainInput:
+makeChart (competeData, mName, mCode, domainInput)
